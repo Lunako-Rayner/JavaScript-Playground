@@ -13,31 +13,31 @@ const cols = 1;
 const cellW = settings.dimensions[0]/ cols;
 const cellH = settings.dimensions[1]/ rows;
 
-
 const sketch = ({ context, width, height }) => {
     balls = initBallRow();
-    // initWordRow();
+    initWordRow(context);
+    setInterval(drawWordRow, 3500, context, [cellW /2, cellH *1.5])
+    setInterval(fadeWordRow, 100 , context, [0, cellH ], cellW, cellH, 0.05)
   return drawOneFrame
 };
 
 canvasSketch(sketch, settings);
 
-const drawOneFrame = ({context, width, height, time}) => {
+const drawOneFrame = ({context, width, height}) => {
     drawBallRow(context, balls);
-    // drawWordRow();
 };
 
 const drawBallRow = (context, balls) => {
-drawBlackBackground(context, [0, 0], cellW, cellH);
+drawBlackBackground(context, [0, 0], cellW, cellH, 0.05);
 drawRedLine(context,[0, cellH], cellW);
 balls = updateBallPositions(balls);
 drawBalls(context, balls);
 };
 
-const drawBlackBackground = (context, topLeft, width, height) => {
+const drawBlackBackground = (context, topLeft, width, height, alpha) => {
     [x, y] = topLeft
 
-    context.fillStyle = 'black';
+    context.fillStyle = `rgba(0, 0, 0 , ${alpha})`;
     context.fillRect(x, y, width, height);
 };
 
@@ -108,4 +108,35 @@ for(const ball of balls){
 
 }
 }
+
+const drawWordRow = (context, wordPosition) => {
+  drawBlackBackground(context, [0, cellH ], cellW, cellH, 1);
+  drawRedLine(context,[0, cellH * 2], cellW);
+  drawWord(context, wordPosition)
+}
+
+const drawWord = (context, wordPosition) => {
+
+[x, y] = wordPosition;
+
+  context.fillStyle = 'orange';
+  context.font = '70px serif';
+  context.textBaseline = 'middle';
+  context.textAlign = 'center'
+  const text = ['Be Afraid', 'Impending Doom', 'Improper Displays', 'Scared', 'Disturbed', 'Thriller', 'Slasher', 'Suge Knight', 'M. Knight Shymalan'];
+  
+  const random = Math.floor(Math.random() * text.length);
+  context.fillText(text[random], x, y);
+  }; 
+
+const initWordRow = (context) => {
+  drawBlackBackground(context, [0, cellH ], cellW, cellH, 1);
+  drawRedLine(context,[0, cellH * 2], cellW);
+};
+
+const fadeWordRow = (context, topLeft, width, height, alpha) => {
+
+  drawBlackBackground(context, topLeft, width, height, alpha);
+  drawRedLine(context,[0, cellH * 2], cellW);
+};
 
