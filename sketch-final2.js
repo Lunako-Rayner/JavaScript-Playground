@@ -2,6 +2,8 @@ const canvasSketch = require('canvas-sketch');
 const math = require("canvas-sketch-util/math");
 const random = require("canvas-sketch-util/random");
 
+
+
 const settings = {
   dimensions: [ 1080, 1080],
   animate: true
@@ -13,11 +15,13 @@ const cols = 1;
 const cellW = settings.dimensions[0]/ cols;
 const cellH = settings.dimensions[1]/ rows;
 
-const sketch = ({ context, width, height }) => {
+const sketch = ({ canvas, context, width, height }) => {
+    canvas.style.zIndex = '1'
     balls = initBallRow();
     initWordRow(context);
     setInterval(drawWordRow, 3500, context)
-    setInterval(fadeWordRow, 100 , context, [0, cellH ], cellW, cellH, 0.05)
+    setInterval(fadeWordRow, 100 , context, [0, cellH ], cellW, cellH, 0.05);
+    drawDomsRow(canvas, context);
   return drawOneFrame
 };
 
@@ -148,5 +152,20 @@ const fadeWordRow = (context, topLeft, width, height, alpha) => {
 
   drawBlackBackground(context, topLeft, width, height, alpha);
   drawRedLine(context,[0, cellH * 2], cellW);
+};
+
+const drawDomsRow = (canvas, context) => {
+drawBlackBackground(context, [0, cellH * 2], cellW, cellH, 1);
+drawRedLine(context, [0, cellH * 3], cellW)
+
+const button = document.createElement("button");
+button.innerHTML = "Click me Bitch";  
+button.addEventListener("click", () => {
+  alert("oh shit, you actually clicked me")
+});
+button.style.zIndex = '2';
+// button.style.top = '0';  
+button.style.position = 'absolute'
+document.body.appendChild(button)
 };
 
