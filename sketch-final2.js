@@ -16,7 +16,7 @@ const cellH = settings.dimensions[1]/ rows;
 const sketch = ({ context, width, height }) => {
     balls = initBallRow();
     initWordRow(context);
-    setInterval(drawWordRow, 3500, context, [cellW /2, cellH *1.5])
+    setInterval(drawWordRow, 3500, context)
     setInterval(fadeWordRow, 100 , context, [0, cellH ], cellW, cellH, 0.05)
   return drawOneFrame
 };
@@ -109,15 +109,13 @@ for(const ball of balls){
 }
 }
 
-const drawWordRow = (context, wordPosition) => {
+const drawWordRow = (context) => {
   drawBlackBackground(context, [0, cellH ], cellW, cellH, 1);
   drawRedLine(context,[0, cellH * 2], cellW);
-  drawWord(context, wordPosition)
+  drawWord(context)
 }
 
-const drawWord = (context, wordPosition) => {
-
-[x, y] = wordPosition;
+const drawWord = (context) => {
 
   context.fillStyle = 'orange';
   context.font = '70px serif';
@@ -125,8 +123,20 @@ const drawWord = (context, wordPosition) => {
   context.textAlign = 'center'
   const text = ['Be Afraid', 'Impending Doom', 'Improper Displays', 'Scared', 'Disturbed', 'Thriller', 'Slasher', 'Suge Knight', 'M. Knight Shymalan'];
   
-  const random = Math.floor(Math.random() * text.length);
-  context.fillText(text[random], x, y);
+  const randomIndex = Math.floor(Math.random() * text.length);
+  const word = text[randomIndex]
+  
+  const metrics = context.measureText(word);
+  
+  // generate a number in [0, 1] -> Math.random()
+  // generate a number in [a, b] -> Math.random() * (b - a) + a
+  const mLeft = metrics.actualBoundingBoxLeft;//a
+  const mRight = cellW - metrics.actualBoundingBoxRight;//b
+  const mTop = metrics.actualBoundingBoxAscent;
+  const mBottom = cellH - metrics.actualBoundingBoxDescent;
+  const x = Math.floor(Math.random() * (mRight- mLeft) + mLeft);
+  const y = Math.floor(Math.random() * (mBottom - mTop) + mTop) + cellH;
+  context.fillText(word, x, y);
   }; 
 
 const initWordRow = (context) => {
