@@ -6,6 +6,7 @@ const cellW = canvas.width;
 const cellH = Math.floor(canvas.height / 5);
 const ballSpeedMax = 1;
 const ballCount = 100;
+const wordsArr = ['Be Afraid', 'Impending Doom', 'Smile', 'Yikes', 'Improper Displays', 'Scared', 'Disturbed', 'Thriller', 'Slasher', 'Suge Knight', 'M. Knight Shymalan'];
 
 //handle resize of window
 window.addEventListener('resize', function () {
@@ -82,8 +83,49 @@ class Balls {
 }
 
 var balls = new Balls(ballCount, ballSpeedMax);
+
+class Words {
+    constructor() {
+
+    }
+    update() {
+        let randomIndex = Math.floor(Math.random() * wordsArr.length);
+        this.word = wordsArr[randomIndex];
+        let metrics = ctx.measureText(this.word);
+        const left = metrics.actualBoundingBoxLeft;
+        const right = cellW - metrics.actualBoundingBoxRight;
+        const top = cellH + metrics.actualBoundingBoxAscent;
+        const bottom = (cellH * 2) - metrics.actualBoundingBoxDescent;
+
+        this.positionX = Math.floor(randomFloat(left, right));
+        this.positionY = Math.floor(randomFloat(top, bottom));
+    };
+    draw() {
+        ctx.beginPath();
+        ctx.font = '70px copperplate';
+        ctx.textBaseline = 'middle';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'orange';
+        ctx.fillText(this.word, this.positionX, this.positionY);
+    };
+    drawOneWord() {
+        this.update();
+        this.draw();
+    };
+    fadeWords() {
+        const alpha = 0.05;
+        ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
+        ctx.fillRect(0, cellH + 1, cellW, cellH);
+    }
+}
+
+let words = new Words();
+
+setInterval(words.drawOneWord.bind(words), 3500);
+setInterval(words.fadeWords.bind(words), 100);
+
 const animate = function () {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, cellH + 1);
     balls.updateAllBalls();
     balls.drawAllBalls();
     requestAnimationFrame(animate);
