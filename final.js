@@ -6,7 +6,7 @@ const cellW = canvas.width;
 const cellH = Math.floor(canvas.height / 5);
 const ballSpeedMax = 1;
 const ballCount = 100;
-const wordsArr = ['Be Afraid', 'Impending Doom', 'Smile', 'Yikes', 'Improper Displays', 'Scared', 'Disturbed', 'Thriller', 'Slasher', 'Suge Knight', 'M. Knight Shymalan'];
+const wordsArr = ['⚰️', '👻', 'Oh Shit!', 'Be Afraid', '🪦', 'Impending Doom', 'Smile', 'Yikes', 'Improper Displays', 'Scared', 'Disturbed', 'Thriller', 'Slasher', 'Suge Knight', 'M. Knight Shymalan'];
 
 //handle resize of window
 window.addEventListener('resize', function () {
@@ -124,10 +124,80 @@ let words = new Words();
 setInterval(words.drawOneWord.bind(words), 3500);
 setInterval(words.fadeWords.bind(words), 100);
 
+
+class ScribbleButton {
+    constructor() {
+
+        this.lenToDraw = 0;
+        this.lenBlank = 200;  // some number longer than it requires to draw a letter
+        this.speed = 5;
+        this.txt = "Scribble on me baby";
+        this.letterPosX = cellW / 2 - 225;
+        this.letterPosY = (cellH * 3.5) - 25;
+        this.letterIdx = 0;
+        // let metrics = ctx.measureText(this.text);
+        // const left = metrics.actualBoundingBoxLeft;
+        // const right = cellW - metrics.actualBoundingBoxRight;
+        // const top = cellH + metrics.actualBoundingBoxAscent;
+        // const bottom = (cellH * 2.5) - metrics.actualBoundingBoxDescent;
+        // this.positionX = Math.floor(randomFloat(left, right));
+        // this.positionY = Math.floor(randomFloat(top, bottom));
+    }
+    drawPartOfLetter() {
+
+        if (this.letterIdx >= this.txt.length) {
+            return;
+        }
+        ctx.save();
+        ctx.strokeStyle = ctx.fillStyle = "white";
+        ctx.font = "55px Comic Sans MS, cursive, TSCu_Comic, sans-serif";
+        ctx.lineWidth = 5;
+        ctx.lineJoin = "round";
+        ctx.globalAlpha = 2 / 3;
+
+
+        ctx.setLineDash([this.lenToDraw, this.lenBlank]);
+        ctx.strokeText(this.txt[this.letterIdx], this.letterPosX, this.letterPosY);
+        // ctx.clearRect(x, y, cellW, cellH * 3);
+
+
+        this.lenToDraw += this.speed;
+        this.lenBlank -= this.speed;
+
+        // done drawing outline of this letter, now fill it in and possibly move to next letter
+        if (this.lenBlank <= 0) {
+
+            //   ctx.fillText(txt[i], x, y);                                
+            //   ctx.setTransform(1, 0, 0, 1, 0, 3 * Math.random());       
+            // ctx.rotate(Math.random() * 0.5);
+
+            // done with current letter, draw next letter if any remain
+            this.letterIdx++;
+
+            if (this.letterIdx < this.txt.length) {
+                // reset params to draw next letter
+                this.lenToDraw = 0;
+                this.lenBlank = 200;  // some number longer than it requires to draw a letter
+
+                // move to position to draw next letter
+                this.letterPosX += ctx.measureText(this.txt[this.letterIdx]).width + ctx.lineWidth * Math.random();
+            }
+        }
+        ctx.restore();
+    } update() {
+
+    }
+}
+
+let scribbleButton = new ScribbleButton();
+
 const animate = function () {
     ctx.clearRect(0, 0, canvas.width, cellH + 1);
     balls.updateAllBalls();
     balls.drawAllBalls();
+    scribbleButton.drawPartOfLetter();
+    // scribbleTextBox.drawPartOfLetter();
+    // scribbleTextBox.draw();
     requestAnimationFrame(animate);
 };
 animate();
