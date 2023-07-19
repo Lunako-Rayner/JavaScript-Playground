@@ -4,7 +4,7 @@ const math = require("canvas-sketch-util/math");
 
 const settings = {
   dimensions: [1080, 1080],
-  animate: true,
+  //animate: true,
 };
 
 const animate = function () {
@@ -13,7 +13,7 @@ const animate = function () {
 };
 // animate();
 
-const sketch = () => {
+const sketch = ({ context, width, height }) => {
   const agents = [];
 
   for (let i = 0; i < 40; i++) {
@@ -69,7 +69,7 @@ class vector {
 }
 
 class Agent {
-  constructor(x, y) {
+  constructor(x, y) { 
     this.pos = new vector(x, y);
     this.vel = new vector(random.range(-1, 1), random.range(-1, 1));
     this.radius = random.range(4, 12);

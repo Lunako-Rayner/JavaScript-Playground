@@ -1,5 +1,9 @@
 const canvasSketch = require("canvas-sketch");
 const tweakPane = require("tweakpane");
+const random = require("canvas-sketch-util/random");
+
+const canvas = document.getElementById('canvas');
+const context = canvas.getContext('2d');
 
 const settings = {
   dimensions: [1080, 1080],
@@ -25,10 +29,12 @@ const sketch = ({ context, width, height }) => {
     typeContext.fillStyle = "black";
     typeContext.fillRect(0, 0, cols, rows);
 
-    fontSize = cols;
+    fontSize = cols * 1.1;
 
     typeContext.fillStyle = "white";
     typeContext.font = `${fontSize}px ${fontFamily}`;
+    typeContext.font = `${fontSize}px ${fontFamily}`;
+
     typeContext.textBaseline = "top";
 
     const metrics = typeContext.measureText(text);
@@ -52,8 +58,14 @@ const sketch = ({ context, width, height }) => {
     typeContext.restore();
 
     const typeData = typeContext.getImageData(0, 0, cols, rows).data;
+    
+    context.fillStyle = 'black';
+    context.fillRect(0, 0, width, height)
 
-    context.drawImage(typeCanvas, 0, 0);
+    context.textBaseline = 'middle';
+    context.textAlign = 'centre';
+
+    //context.drawImage(typeCanvas, 0, 0);
 
     for (let i = 0; i < numCells; i++) {
       const col = i % cols;
@@ -67,21 +79,36 @@ const sketch = ({ context, width, height }) => {
       const b = typeData[i * 4 + 2];
       const a = typeData[i * 4 + 3];
 
-      context.fillStyle = `rgb(${r}, ${g}, ${b})`;
+      const glyph = getGlyph(r)
+
+      context.font = `${cell * 2}px ${fontFamily}`
+      if (Math.random() < 0.1)context.font = `${cell * 6}px ${fontFamily}`
+      context.fillStyle = 'white'
 
       context.save();
       context.translate(x, y);
       context.translate(cell * 0.5, cell * 0.5);
 
       // context.fillRect(0, 0, cell, cell);
-      context.beginPath();
-      context.arc(0, 0, cell * 0.5, 0, Math.PI * 2);
-      context.fill();
+      context.fillText(glyph, 0, 0)
 
       context.restore();
     }
   };
 };
+
+const getGlyph = (v)=> {
+
+  if (v < 50) return ' ';
+  if (v < 100) return '.';
+  if (v < 50) return '-';
+  if (v < 200) return '+';
+
+  const glyphs = '>./'.split('')
+  
+  return random.pick(glyphs)
+}
+
 
 const onKeyUp = (e) => {
   text = e.key.toUpperCase();
