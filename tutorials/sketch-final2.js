@@ -164,7 +164,7 @@ const drawDomsRow = (canvas, context) => {
     y: (cellH * 2.5) - 25,
     width: 200,
     height: 50,
-    text: 'Click Me Bitch',
+    text: 'Click Me',
     colour: 'rgba(225,225,225,0.5)',
   };
 
@@ -215,7 +215,7 @@ const drawDomsRow = (canvas, context) => {
 
       // Set the source of the image
       // img.src = "path/to/image.png";
-      const images = ["terrifier.jpg", "TheCrazies.jpg", "scary pic.jpeg"];
+      const images = ["../media/images/terrifier.jpg", "../media/images/TheCrazies.jpg", "../media/images/scarypic.jpeg"];
       const randomInt = Math.floor(Math.random() * images.length);
       img.src = images[randomInt];
 
@@ -369,7 +369,7 @@ const drawUIRow = (context) => {
   const inputBoxRect = inputElement.getBoundingClientRect();
 
   inputElement.style.top = inputBoxRect.top + 20 + "px";
-  inputElement.style.left = '10px'
+  inputElement.style.left = '10px';
 
 
   //   context.font= '30px Arial';
