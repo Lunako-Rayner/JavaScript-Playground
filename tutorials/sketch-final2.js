@@ -8,7 +8,7 @@ const settings = {
 };
 
 const ballCount = 80;
-const rows = 5;
+const rows = 3;
 const cols = 1;
 const cellW = settings.dimensions[0] / cols;
 const cellH = settings.dimensions[1] / rows;
@@ -20,8 +20,8 @@ const sketch = ({ canvas, context, width, height }) => {
   setInterval(drawWordRow, 3500, context);
   setInterval(fadeWordRow, 100, context, [0, cellH], cellW, cellH, 0.05);
   drawDomsRow(canvas, context);
-  drawFourthRow(context);
-  drawUIRow(context);
+  // drawFourthRow(context);
+
   return drawOneFrame;
 };
 
@@ -126,7 +126,7 @@ const drawWord = (context) => {
   context.font = '70px copperplate';
   context.textBaseline = 'middle';
   context.textAlign = 'center';
-  const text = ['Be Afraid', 'Impending Doom', 'Smile', 'Yikes', 'Improper Displays', 'Scared', 'Disturbed', 'Thriller', 'Slasher', 'Suge Knight', 'M. Knight Shymalan'];
+  const text = ['Be Afraid', 'Impending Doom', 'Oh Shit 🏃🏾‍♀️', 'Smile', 'Yikes', 'Improper Displays', 'Be Scared', 'Turn around 🫵🏼', 'Disturbed', 'Sinister', 'Thriller', 'Slasher','RUN!!!!!' ,'Du..du..Duuuuuuuu... 😟', 'Suge Knight', 'Don\'t look back' ,'M. Knight Shymalan'];
 
   const randomIndex = Math.floor(Math.random() * text.length);
   const word = text[randomIndex];
@@ -269,9 +269,9 @@ const drawButton = (context, button) => {
   context.fillText(button.text, button.x + button.width / 2, button.y + button.height / 2);
 };
 
-const drawFourthRow = (context) => {
-  drawBlackBackground(context, [0, cellH * 3], cellW, cellH);
-  drawRedLine(context, [0, cellH * 4], cellW);
+// const drawFourthRow = (context) => {
+//   drawBlackBackground(context, [0, cellH * 3], cellW, cellH);
+//   drawRedLine(context, [0, cellH * 4], cellW);
 
 
   // // let scribbleButton = {
@@ -330,9 +330,9 @@ const drawFourthRow = (context) => {
 
   //   // done drawing outline of this letter, now fill it in and possibly move to next letter
   //   else {
-  //     //   fourthRowCtx.fillText(txt[i], x, y);                                
-  //     //   fourthRowCtx.setTransform(1, 0, 0, 1, 0, 3 * Math.random());       
-  //     //   fourthRowCtx.rotate(Math.random() * 0.005);                         
+  //     //   fourthRowCtx.fillText(txt[i], x, y);
+  //     //   fourthRowCtx.setTransform(1, 0, 0, 1, 0, 3 * Math.random());
+  //     //   fourthRowCtx.rotate(Math.random() * 0.005);
 
   //     // done with current letter, draw next letter if any remain
   //     letter_idx++;
@@ -349,27 +349,27 @@ const drawFourthRow = (context) => {
   // }
 
   // drawPartOfLetter();
-};
+//};
 
-const drawUIRow = (context) => {
-  drawBlackBackground(context, [0, cellH * 4], cellW, cellH);
-  drawRedLine(context, [0, cellH * 5], cellW);
+// const drawUIRow = (context) => {
+//   drawBlackBackground(context, [0, cellH * 4], cellW, cellH);
+//   drawRedLine(context, [0, cellH * 5], cellW);
 
-  const inputElement = document.createElement("input");
-  inputElement.type = "text";
-  inputElement.id = "my-input";
-  document.body.appendChild(inputElement);
+//   const inputElement = document.createElement("input");
+//   inputElement.type = "text";
+//   inputElement.id = "my-input";
+//   document.body.appendChild(inputElement);
 
-  inputElement.addEventListener("input", () => {
-    const value = inputElement.value;
-    // Do something with the value.
-  });
+//   inputElement.addEventListener("input", () => {
+//     const value = inputElement.value;
+//     // Do something with the value.
+//   });
 
-  // const inputBox = document.querySelector("input");
-  const inputBoxRect = inputElement.getBoundingClientRect();
+//   // const inputBox = document.querySelector("input");
+//   const inputBoxRect = inputElement.getBoundingClientRect();
 
-  inputElement.style.top = inputBoxRect.top + 20 + "px";
-  inputElement.style.left = '10px';
+//   inputElement.style.top = inputBoxRect.top + 20 + "px";
+//   inputElement.style.left = '10px';
 
 
   //   context.font= '30px Arial';
@@ -387,4 +387,4 @@ const drawUIRow = (context) => {
   // context.rect(cellW/16, cellH * 4.3, 200, 100)
   // context.stroke()
 
-};
+// };

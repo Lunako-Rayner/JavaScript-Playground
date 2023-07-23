@@ -10,7 +10,7 @@ Built within an HTML5 Canvas environment, this project serves as a visual playgr
 
 ## Structure
 
-The main body of the project is contained within the files: `playground.js`, `index.html`, and `style.css`.
+The main body of the project is contained within the files: `playground.js`, `index.html`, and `style.css`. `tutorials/sketch-final2.js` is a rough version that is being re-written in `playground.js`.
 
 The `tutorials` directory includes a collection of sketches from the following course [Creative Coding: Making Visuals with JavaScript](https://www.domestika.org/en/courses/2729-creative-coding-making-visuals-with-javascript).
 
